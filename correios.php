@@ -311,6 +311,20 @@ class Correios extends CarrierModule
 		$this->_html .= $this->_displayFormConfig();
 	}
 
+	private function _displayFormConfig()
+	{
+		$template_variables = array(
+			'REQUEST_URI' => $_SERVER['REQUEST_URI'],
+			'myCheckBox' => Tools::getValue('correios_carrier_display_all', Configuration::get('CORREIOS_CARRIER_DISPLAY_ALL')), 
+			'zip_code' => Tools::getValue('correios_carrier_postal_code', Configuration::get('CORREIOS_CARRIER_POSTAL_CODE')),
+			'tab_selected' => isset($_GET['id_tab']),
+		);
+		$this->smarty->assign($template_variables);
+
+		return $this->display(__FILE__, 'config/form-general.tpl');
+		
+	}
+
 	private function _postValidation()
 	{
 		if (Tools::getValue('section') == 'general')
@@ -326,46 +340,10 @@ class Correios extends CarrierModule
       		
 	}
 	
-	/*
-	** General Form Config Methods
-	**
-	*/
 
-	private function _displayFormConfig()
-	{
-		template_variables = array(
-			'REQUEST_URI' => $_SERVER['REQUEST_URI'],
-			'address_configuration' => $this->l('Address configuration'),
-			'myCheckBox' => Tools::getValue('correios_carrier_display_all', Configuration::get('CORREIOS_CARRIER_DISPLAY_ALL')), 
-			'zip_label' => $this->l('Zip / Postal Code'),
-			'zip_code' => Tools::getValue('correios_carrier_postal_code', Configuration::get('CORREIOS_CARRIER_POSTAL_CODE')),
-			'message' => $this->l('Display All Available Carriers when Free Shipping.'),
-			'tab_selected' => isset($_GET['id_tab']),
-		);
-		$this->smarty->assign($template_variables);
+	
 
-		return $this->display(__FILE__, 'config/form-general.tpl');
-
-
-		
-	}
-
-	private function _displayFormGeneral()
-	{
-		
-		$template_variables = array(
-			'REQUEST_URI' => $_SERVER['REQUEST_URI'],
-			'address_configuration' => $this->l('Address configuration'),
-			'myCheckBox' => Tools::getValue('correios_carrier_display_all', Configuration::get('CORREIOS_CARRIER_DISPLAY_ALL')), 
-			'zip_label' => $this->l('Zip / Postal Code'),
-			'zip_code' => Tools::getValue('correios_carrier_postal_code', Configuration::get('CORREIOS_CARRIER_POSTAL_CODE')),
-			'message' => $this->l('Display All Available Carriers when Free Shipping.')
-		);
-		$this->smarty->assign($template_variables);
-
-		return $this->display(__FILE__, 'config/form-general.tpl');
-		//return $html;
-	}
+	
 
 	private function _postValidationGeneral()
 	{

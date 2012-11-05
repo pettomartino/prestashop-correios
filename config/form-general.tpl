@@ -23,10 +23,8 @@
 </style>
 
 
-
-
 		<ul id="menuTab">
-				<li id="menuTab1" class="menuTabButton selected">1. '.$this->l('General Settings').'</li>
+				<li id="menuTab1" class="menuTabButton selected">{l s='General Settings' mod='correios'}</li>
 			</ul>
 			<div id="tabList">
 				<div id="menuTab1Sheet" class="tabItem selected">
@@ -34,15 +32,15 @@
 					<form action="{$REQUEST_URI}" method="post" class="form" id="configForm">
 						<input type="hidden" name="section" value="general" />
 						<fieldset style="border: 0px;">
-							<h4>{$address_configuration}: </h4>
-							<label>{$zip_label}: </label>
+							<h4>{l s='Address Configuration' mod='correios'}: </h4>
+							<label>{l s='Zip / Postal Code' mod='correios'}: </label>
 							<div class="margin-form">
 								<input type="text" size="20" name="correios_carrier_postal_code" value="{$zip_code}" /><br /><BR>
 								<input type="checkbox" name="correios_carrier_display_all" value="on"
 								{if myCheckBox eq "on"}
 								checked
 								{/if}
-								>{$message}<br>
+								>{l s='Display All Available Carriers when Free Shipping.' mod='correios'}<br>
 							</div>				
 						</fieldset>	
 						<div class="margin-form"><input class="button" name="submitSave" type="submit"></div>
