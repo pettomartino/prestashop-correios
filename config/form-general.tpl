@@ -22,19 +22,56 @@
 	.stateInput.selected { display: block; }
 </style>
 
-<form action="{$REQUEST_URI}" method="post" class="form" id="configForm">
-	<input type="hidden" name="section" value="general" />
-	<fieldset style="border: 0px;">
-		<h4>{$address_configuration}: </h4>
-		<label>{$zip_label}: </label>
-		<div class="margin-form">
-			<input type="text" size="20" name="correios_carrier_postal_code" value="{$zip_code}" /><br /><BR>
-			<input type="checkbox" name="correios_carrier_display_all" value="on"
-			{if myCheckBox eq "on"}
-			checked
+
+
+
+		<ul id="menuTab">
+				<li id="menuTab1" class="menuTabButton selected">1. '.$this->l('General Settings').'</li>
+			</ul>
+			<div id="tabList">
+				<div id="menuTab1Sheet" class="tabItem selected">
+
+					<form action="{$REQUEST_URI}" method="post" class="form" id="configForm">
+						<input type="hidden" name="section" value="general" />
+						<fieldset style="border: 0px;">
+							<h4>{$address_configuration}: </h4>
+							<label>{$zip_label}: </label>
+							<div class="margin-form">
+								<input type="text" size="20" name="correios_carrier_postal_code" value="{$zip_code}" /><br /><BR>
+								<input type="checkbox" name="correios_carrier_display_all" value="on"
+								{if myCheckBox eq "on"}
+								checked
+								{/if}
+								>{$message}<br>
+							</div>				
+						</fieldset>	
+						<div class="margin-form"><input class="button" name="submitSave" type="submit"></div>
+					</form>
+				</div>
+			</div>
+			<br clear="left" />
+			<br />
+			<style>
+				#menuTab { float: left; padding: 0; margin: 0; text-align: left; }
+				#menuTab li { text-align: left; float: left; display: inline; padding: 5px; padding-right: 10px; background: #EFEFEF; font-weight: bold; cursor: pointer; border-left: 1px solid #EFEFEF; border-right: 1px solid #EFEFEF; border-top: 1px solid #EFEFEF; }
+				#menuTab li.menuTabButton.selected { background: #FFF6D3; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; }
+				#tabList { clear: left; }
+				.tabItem { display: none; }
+				.tabItem.selected { display: block; background: #FFFFF0; border: 1px solid #CCCCCC; padding: 10px; padding-top: 20px; }
+			</style>
+			<script>
+				$(".menuTabButton").click(function () {
+				  $(".menuTabButton.selected").removeClass("selected");
+				  $(this).addClass("selected");
+				  $(".tabItem.selected").removeClass("selected");
+				  $("#" + this.id + "Sheet").addClass("selected");
+				});
+			</script>
+			{if tab_selected}
+			<script>
+				  $(".menuTabButton.selected").removeClass("selected");
+				  $("#menuTab'.$_GET['id_tab'].'").addClass("selected");
+				  $(".tabItem.selected").removeClass("selected");
+				  $("#menuTab'.$_GET['id_tab'].'Sheet").addClass("selected");
+			</script>
 			{/if}
-			>{$message}<br>
-		</div>				
-	</fieldset>	
-	<div class="margin-form"><input class="button" name="submitSave" type="submit"></div>
-</form>

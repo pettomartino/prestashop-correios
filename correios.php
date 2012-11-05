@@ -1,7 +1,7 @@
 <?php
 
 
-class CorreiosCarrier extends CarrierModule
+class Correios extends CarrierModule
 {
 	public  $id_carrier;
 
@@ -16,7 +16,7 @@ class CorreiosCarrier extends CarrierModule
 	private $_weightUnit = '';
 	private $_dimensionUnitList = array('CM' => 'CM', 'IN' => 'IN', 'CMS' => 'CM', 'INC' => 'IN');
 	private $_weightUnitList = array('KG' => 'KGS', 'KGS' => 'KGS', 'LBS' => 'LBS', 'LB' => 'LBS');
-	private $_moduleName = 'correioscarrier';
+	private $_moduleName = 'correios';
 	
 	/*
 	** Construct Method
@@ -29,13 +29,13 @@ class CorreiosCarrier extends CarrierModule
 
 		$this->name = 'correios';
 		$this->tab = 'shipping_logistics';
-		$this->version = '1.07';
-		$this->author = 'Petto Martino';
+		$this->version = '0.12';
+		$this->author = 'Petto Martio';
 
 		parent::__construct ();
 
-		$this->displayName = $this->l('Frete Correios');
-		$this->description = $this->l('Calculo de frete realizado pelos correios');
+		$this->displayName = $this->l('Correios Carrier');
+		$this->description = $this->l('Modified by Fabrice Menoyot. Offer your customers, different delivery methods with Brazilian Correios');
 
 		if (self::isInstalled($this->name))
 		{
@@ -49,14 +49,10 @@ class CorreiosCarrier extends CarrierModule
 					$warning[] = '\''.$name.'\' ';
 
 			// Checking Unit
-			
 			$this->_dimensionUnit = $this->_dimensionUnitList[strtoupper(Configuration::get('PS_DIMENSION_UNIT'))];
-			
 			$this->_weightUnit = $this->_weightUnitList[strtoupper(Configuration::get('PS_WEIGHT_UNIT'))];
-
 			if (!$this->_weightUnit || !$this->_weightUnitList[$this->_weightUnit])
 				$warning[] = $this->l('\'Weight Unit (LB or KG).\'').' ';
-			
 			if (!$this->_dimensionUnit || !$this->_dimensionUnitList[$this->_dimensionUnit])
 				$warning[] = $this->l('\'Dimension Unit (CM or IN).\'').' ';
 
@@ -87,6 +83,7 @@ class CorreiosCarrier extends CarrierModule
 
 		// Install SQL
 		include(dirname(__FILE__).'/config.php');
+		
 		include(dirname(__FILE__).'/sql-install.php');
 		
 		foreach ($sql as $s) {
@@ -189,7 +186,6 @@ class CorreiosCarrier extends CarrierModule
 	public static function installExternalCarrier($config)
 	{
 		$carrier = new Carrier();
-
 		$carrier->name = $config['name'];
 		$carrier->id_tax_rules_group = $config['id_tax_rules_group'];
 		$carrier->id_zone = $config['id_zone'];
@@ -337,40 +333,21 @@ class CorreiosCarrier extends CarrierModule
 
 	private function _displayFormConfig()
 	{
-		$html = '
-		<ul id="menuTab">
-				<li id="menuTab1" class="menuTabButton selected">1. '.$this->l('General Settings').'</li>
-			</ul>
-			<div id="tabList">
-				<div id="menuTab1Sheet" class="tabItem selected">'.$this->_displayFormGeneral().'</div>
-			</div>
-			<br clear="left" />
-			<br />
-			<style>
-				#menuTab { float: left; padding: 0; margin: 0; text-align: left; }
-				#menuTab li { text-align: left; float: left; display: inline; padding: 5px; padding-right: 10px; background: #EFEFEF; font-weight: bold; cursor: pointer; border-left: 1px solid #EFEFEF; border-right: 1px solid #EFEFEF; border-top: 1px solid #EFEFEF; }
-				#menuTab li.menuTabButton.selected { background: #FFF6D3; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; border-top: 1px solid #CCCCCC; }
-				#tabList { clear: left; }
-				.tabItem { display: none; }
-				.tabItem.selected { display: block; background: #FFFFF0; border: 1px solid #CCCCCC; padding: 10px; padding-top: 20px; }
-			</style>
-			<script>
-				$(".menuTabButton").click(function () {
-				  $(".menuTabButton.selected").removeClass("selected");
-				  $(this).addClass("selected");
-				  $(".tabItem.selected").removeClass("selected");
-				  $("#" + this.id + "Sheet").addClass("selected");
-				});
-			</script>
-		';
-		if (isset($_GET['id_tab']))
-			$html .= '<script>
-				  $(".menuTabButton.selected").removeClass("selected");
-				  $("#menuTab'.$_GET['id_tab'].'").addClass("selected");
-				  $(".tabItem.selected").removeClass("selected");
-				  $("#menuTab'.$_GET['id_tab'].'Sheet").addClass("selected");
-			</script>';
-		return $html;
+		template_variables = array(
+			'REQUEST_URI' => $_SERVER['REQUEST_URI'],
+			'address_configuration' => $this->l('Address configuration'),
+			'myCheckBox' => Tools::getValue('correios_carrier_display_all', Configuration::get('CORREIOS_CARRIER_DISPLAY_ALL')), 
+			'zip_label' => $this->l('Zip / Postal Code'),
+			'zip_code' => Tools::getValue('correios_carrier_postal_code', Configuration::get('CORREIOS_CARRIER_POSTAL_CODE')),
+			'message' => $this->l('Display All Available Carriers when Free Shipping.'),
+			'tab_selected' => isset($_GET['id_tab']),
+		);
+		$this->smarty->assign($template_variables);
+
+		return $this->display(__FILE__, 'config/form-general.tpl');
+
+
+		
 	}
 
 	private function _displayFormGeneral()

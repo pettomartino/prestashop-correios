@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<module>
-	<name>correioscarrier</name>
-	<displayName>Correios Carrier</displayName>
-	<version>1.05</version>
-	<description>Modified by Fabrice Menoyot. Offer your customers, different delivery methods with Brazilian Correios</description>
-	<author>Rodrigo Laurindo</author>
-	<tab>shipping_logistics</tab>
-	<is_configurable>1</is_configurable>
-	<need_instance>1</need_instance>
-</module>
+        <module>
+            <name>correios</name>
+            <displayName><![CDATA[Correios Carrier]]></displayName>
+            <version><![CDATA[0.12]]></version>
+            <description><![CDATA[Modified by Fabrice Menoyot. Offer your customers, different delivery methods with Brazilian Correios]]></description>
+            <author><![CDATA[Petto Martio]]></author>
+            <tab><![CDATA[shipping_logistics]]></tab>
+            <is_configurable>1</is_configurable>
+            <need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+        </module>
