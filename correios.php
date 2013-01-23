@@ -1,7 +1,7 @@
 <?php
 
 
-class Correios extends CarrierModule
+class Correios extends Module
 {
 	public  $id_carrier;
 
@@ -325,6 +325,15 @@ class Correios extends CarrierModule
 		
 	}
 
+	public function hookShoppingCart($params)
+	{
+		if (!$this->isModuleAvailable())
+			return;
+
+
+		return $this->smarty->fetch(_FILE__,'teste.tpl');
+	}
+
 	private function _postValidation()
 	{
 		if (Tools::getValue('section') == 'general')
@@ -596,9 +605,21 @@ class Correios extends CarrierModule
 			return false;
 		}	
 	}
-	
+
+	public function getOrderShippingCost($params, $shipping_cost)
+	{
+		
+		return 0;
+	}
+
+	public function getPackageShippingCost($id_carrier = null, $use_tax = true, Country $default_country = null, $product_list = null)
+	{
+		return 10;
+	}
+	/*
 public function getOrderShippingCost($params, $shipping_cost)
 	{	
+		return 0;
 		
 		// Init var
 		$address = new Address($params->id_address_delivery);
@@ -695,10 +716,12 @@ public function getOrderShippingCost($params, $shipping_cost)
 		}
 		//==========================================================
 	}
+	*/
 
 	public function getOrderShippingCostExternal($params)
 	{
-		return $this->getOrderShippingCost($params, 23);
+		return 0;
+		//return $this->getOrderShippingCost($params, 23);
 	}
 
 	/*
