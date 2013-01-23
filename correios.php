@@ -612,7 +612,7 @@ class Correios extends Module
 		return 0;
 	}
 
-	public function getPackageShippingCost($id_carrier = null, $use_tax = true, Country $default_country = null, $product_list = null)
+	public function getPackageShippingCost($id_carrier = null, $use_tax = true, $default_country = null, $product_list = null)
 	{
 		return 10;
 	}
